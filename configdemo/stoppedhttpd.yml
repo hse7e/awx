@@ -1,0 +1,12 @@
+---
+- name: Stop apache
+  hosts: lab-ansible 
+  tasks: 
+    - name: Stop apache
+      debug:
+        msg: Parando o apache
+    - name: Parar o servidor web
+      service:
+        name: httpd
+        state: stopped
+        enabled: yes

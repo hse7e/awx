@@ -1,0 +1,42 @@
+- name: Clonar VM no Proxmox
+  hosts: localhost
+  gather_facts: false
+  vars_prompt:
+    - name: vm_name
+      prompt: "Informe o nome da nova VM:"
+      private: no
+  tasks:
+    - name: Instalar dependências do Python
+      pip:
+        name: jmespath
+      become: true
+
+    - name: Obter Token de Acesso do Proxmox
+      uri:
+        url: https://10.1.1.14:8006/api2/json/access/ticket
+        method: POST
+        body: "username=henrique@pam&password=15718000"
+        validate_certs: no
+        status_code: 200
+      register: token_response
+      ignore_errors: yes
+
+      #- name: Exibir Saída do Comando
+      #debug:
+      #  var: token_response
+
+    - name: Clonar VM do Template
+      proxmox_kvm:
+        api_host: "10.1.1.14"
+        api_password: "{{ token_response.json.data.ticket }}"
+        api_user: "henrique@pam"
+        node: pxenter
+        vmid: 100
+        clone: yes
+        name: "{{ vm_name }}"
+        storage: local-lvm
+        template: true
+        onboot: true
+        timeout: 600
+      delegate_to: localhost
+

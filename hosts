@@ -1,0 +1,8 @@
+[hse7e]
+pxcenter ansible_ssh_host=10.1.1.14 
+dnsserver ansible_ssh_host=10.1.1.27
+zabbix ansible_ssh_host=10.1.1.40 
+lab-ansible ansible_ssh_host=10.1.1.57
+
+[hse7e:vars]
+ansible_ssh_pass=15718000

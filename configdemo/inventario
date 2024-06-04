@@ -1,0 +1,13 @@
+[hse7e]
+dns
+wiki
+hdm008
+hdm007
+nginxh7
+midialx01
+pxcenter.hse7e.net
+lab-ansible ansible_ssh_host=10.1.1.57
+
+[infra:children]
+hse7e
+
