@@ -8,7 +8,9 @@
   tasks:
     - name: Instalar dependências do Python
       pip:
-        name: jmespath
+        name:
+          - jmespath
+          - proxmoxer  
       become: true
 
     - name: Obter Token de Acesso do Proxmox
@@ -20,10 +22,6 @@
         status_code: 200
       register: token_response
       ignore_errors: yes
-
-      #- name: Exibir Saída do Comando
-      #debug:
-      #  var: token_response
 
     - name: Clonar VM do Template
       proxmox_kvm:
