@@ -1,6 +1,6 @@
 ---
 - name: Configurar IP e Hostname
-  hosts: all
+  hosts: novavm
   become: true
  
   vars_prompt:
