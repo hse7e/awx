@@ -28,7 +28,7 @@
         create: yes
 
     - name: Pegando o nome da interface
-      command: nmcli device status | awk '$3 == "connected" {print $1}' | head -n 1
+      ansible.builtin.shell: "nmcli device status | awk '$3 == \"connected\" {print $1}' | head -n 1"
       register: interface_name
 
     - name: Configurando IP usando nmcli
