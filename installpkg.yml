@@ -1,5 +1,5 @@
 ---
-- hosts: hse7e
+- hosts: hse7e-rpm
   become: true
   tasks:
     - name: Instalar pacote
