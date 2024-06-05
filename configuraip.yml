@@ -1,0 +1,33 @@
+---
+- name: Configurar IP e Hostname
+  hosts: all
+  become: true
+ 
+  vars_prompt:
+    - name: "ip_address"
+      prompt: "Informe o endereço IP"
+      private: no
+ 
+    - name: "hostname"
+      prompt: "Informe o hostname"
+      private: no
+ 
+  tasks:
+    - name: Definir IP, máscara e gateway
+      shell: sudo nmcli con mod ens18 ipv4.addresses "{{ ip_address }}"/21 ipv4.gateway 10.1.1.1 ipv4.method manual
+
+    - name: Definir servidores DNS
+      shell: sudo nmcli con mod ens18 ipv4.dns 10.1.1.27,8.8.8.8 
+      when: dns_servers | default('') != ''
+ 
+    - name: Configurar hostname
+      shell: sudo nmcli g hostname "{{ hostname }}"
+ 
+    - name: Reiniciar a rede
+      shell: sudo nmcli conn up ens18
+      async: 10
+      poll: 0
+ 
+    - name: Exibir mensagem de sucesso
+      debug:
+        msg: "Configuração concluída com sucesso!"
