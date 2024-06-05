@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: hse7e
   become: true
   tasks:
     - name: Instalar pacote
