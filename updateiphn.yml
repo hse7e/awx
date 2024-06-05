@@ -1,0 +1,41 @@
+---
+- name: Atualiza IP e hostname 
+  hosts: novavm
+  become: yes
+  vars_prompt:
+    - name: "new_ip"
+      prompt: "Enter the new IP address"
+      private: no
+    - name: "new_name"
+      prompt: "Enter the new hostname"
+      private: no
+
+  tasks:
+    - name: Configura novo hostname
+      ansible.builtin.hostname:
+        name: "{{ new_name }}"
+
+    - name: Atualiza /etc/hostname
+      ansible.builtin.command:
+        cmd: "hostnamectl set-hostname {{ new_name }}"
+      become: yes
+
+    - name: Atualiza /etc/hosts
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.0\.1\s+'
+        line: "127.0.0.1 {{ new_name }} localhost"
+        create: yes
+
+    - name: Pegando o nome da interface
+      command: nmcli device status | awk '$3 == "connected" {print $1}' | head -n 1
+      register: interface_name
+
+    - name: Configurando IP usando nmcli
+      command: nmcli con mod {{ interface_name.stdout }} ipv4.addresses {{ new_ip }}/24 ipv4.method manual
+      become: yes
+
+    - name: Reboot the machine to apply changes
+      ansible.builtin.reboot:
+        reboot_timeout: 300
+      become: yes
