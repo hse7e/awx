@@ -29,7 +29,7 @@
         api_password: "{{ token_response.json.data.ticket }}"
         api_user: "henrique@pam"
         node: pxenter
-        vmid: 100
+        vmid: 110
         clone: yes
         name: "{{ vm_name }}"
         storage: local-lvm
