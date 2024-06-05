@@ -1,5 +1,5 @@
 ---
-- hosts: midia
+- hosts: zabbix
   become: true
   tasks:
     - name: Instalar pacote
