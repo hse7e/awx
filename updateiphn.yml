@@ -27,12 +27,17 @@
         line: "127.0.0.1 {{ new_name }} localhost"
         create: yes
 
-    - name: Pegando o nome da interface
+    - name: Descobrindo o nome da interface
       ansible.builtin.shell: "nmcli device status | awk '$3 == \"connected\" {print $1}' | head -n 1"
       register: interface_name
 
+    - name: Encontre o nome da conexão para a interface
+      ansible.builtin.shell: "nmcli -t -f NAME,DEVICE con show | grep {{ interface_name.stdout }} | cut -d: -f1"
+      register: connection_name
+
     - name: Configurando IP usando nmcli
-      command: nmcli con mod {{ interface_name.stdout }} ipv4.addresses {{ new_ip }}/24 ipv4.method manual
+      ansible.builtin.command:
+        cmd: "nmcli con mod {{ connection_name.stdout }} ipv4.addresses {{ new_ip }}/24 ipv4.method manual"
       become: yes
 
     - name: Reboot the machine to apply changes
