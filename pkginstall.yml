@@ -1,7 +1,9 @@
 ---
-- hosts: zabbix
+- hosts: hse7e-rpm
   become: true
+  vars_prompt: name_pkg
+
   tasks:
     - name: Instalar pacote
       ansible.builtin.package:
-        name: neofetch
+        name: "{{ name_pkg }}"
