@@ -1,7 +1,10 @@
 ---
 - hosts: hse7e-rpm
   become: true
-  vars_prompt: name_pkg
+  vars_prompt: 
+    name: "name_pkg"
+    prompt: "Digite o nome do pacote"
+    private: no
 
   tasks:
     - name: Instalar pacote
