@@ -1,4 +1,4 @@
-- name: Clonar CT no Proxmox
+- name: Clonar container no Proxmox
   hosts: localhost
   gather_facts: false
   vars_prompt:
@@ -21,7 +21,6 @@
         validate_certs: no
         status_code: 200
       register: token_response
-      ignore_errors: yes
 
     - name: Clonar container do Template
       proxmox_kvm:
@@ -37,3 +36,4 @@
         onboot: true
         timeout: 600
       delegate_to: localhost
+
