@@ -1,4 +1,4 @@
-- name: Clonar VM no Proxmox
+- name: Clonar CT no Proxmox
   hosts: localhost
   gather_facts: false
   vars_prompt:
